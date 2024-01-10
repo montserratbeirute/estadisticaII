@@ -1,7 +1,3 @@
-#---Paquetes--------------------------------------------------------
-
-library(stringr) # para cambiar todas las commas a puntos en la columna Ultimo Salario
-
 #---CSV y formatos--------------------------------------------------------
 
 # Abrir y dar formato a la base de datos
@@ -14,6 +10,5 @@ colnames(base_salarios)[5] ="Ultimo.Salario"
 
 base_salarios <- subset(base_salarios, select = -X)
 
-base_salarios$Ultimo.Salario <- as.numeric(str_replace_all(base_salarios$Ultimo.Salario, ",", "."))
-
+base_salarios$Ultimo.Salario <- as.numeric(gsub(",", ".", gsub("\\.", "", base_salarios$Ultimo.Salario)))
 #-------------------------------------------------------
