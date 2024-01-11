@@ -3,7 +3,7 @@
     "path": "~/estadisticaII/estadisticaII/R.R",
     "project_path": "R.R",
     "type": "r_source",
-    "hash": "2156247006",
+    "hash": "1182207775",
     "contents": "",
     "dirty": false,
     "created": 1704925738310.0,
@@ -12,15 +12,15 @@
     "properties": {
         "source_window_id": "",
         "Source": "Source",
-        "cursorPosition": "13,0",
-        "scrollLine": "0"
+        "cursorPosition": "89,0",
+        "scrollLine": "73"
     },
     "folds": "",
-    "lastKnownWriteTime": 1704927069,
+    "lastKnownWriteTime": 1705016639,
     "encoding": "UTF-8",
     "collab_server": "",
     "source_window": "",
-    "last_content_update": 1704927069883,
+    "last_content_update": 1705016639534,
     "read_only": false,
     "read_only_alternatives": []
 }
