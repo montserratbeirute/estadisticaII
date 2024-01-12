@@ -3,6 +3,8 @@
 library(stringr) # para cambiar todas las commas a puntos en la columna Ultimo Salario
 library(ggplot2) # para hacer graficos
 library(cowplot) # facilita creación de gráficos
+library(univariateML) # para realizar el análisis AIC
+library(rriskDistributions) # para realizar el análisis AIC
 
 #---CSV y formatos--------------------------------------------------------
 
@@ -193,3 +195,17 @@ lines(density_uniforme, lwd = 2, lty = 1, col = "goldenrod2")
 legend("topright", legend = c("Biweight", "Normal", "Epanechnikov", "Coseno", "Rectangular", "Triangular"),
        col = c("cyan4", "red2", "seagreen", "hotpink1", "goldenrod2", "blue2"),
        lty = 1, lwd = 2)
+
+#----Parte III---------------------------------------------------
+
+# Queremos realizar un análisis AIC de la variable U. Salarios para determinar que densidad paramétrica es la que más se le aproxima.
+
+model_select(
+  ult.salario,
+  models = univariateML_models,
+  criterion = c("aic", "bic", "loglik"),
+  na.rm = FALSE,
+)
+
+rriskFitdist.cont(ult.salario,"t" ,method = c("mle", "mme"))
+
