@@ -85,5 +85,111 @@ density_biweight <- density(ult.salario,kernel = "biweight")
 
 plot(density_biweight, main = "Biweight kernel", ylab = "Densidad")
 
-# b. 
+hist(ult.salario,
+     main = "Histograma de últimos salarios con kernel Biweight",
+     xlab = "Salarios",
+     ylab = "Densidad",
+     col = "lightskyblue2", breaks=20, freq = FALSE, ylim = c(0, 0.0000008))
 
+lines(density_biweight,lwd=2,lty=1)
+
+# b. Normal o Gaussiano
+
+density_normal <- density(ult.salario,kernel = "gaussian")
+
+plot(density_normal, main = "Normal kernel", ylab = "Densidad")
+
+hist(ult.salario,
+     main = "Histograma de últimos salarios con kernel Normal",
+     xlab = "Salarios",
+     ylab = "Densidad",
+     col = "lightskyblue2", breaks=20, freq = FALSE, ylim = c(0, 0.0000008))
+
+lines(density_normal,lwd=2,lty=1)
+
+# c. Epanechnikov
+
+density_epanechnikov <- density(ult.salario,kernel = "epanechnikov")
+
+plot(density_epanechnikov, main = "Epanechnikov kernel", ylab = "Densidad")
+
+hist(ult.salario,
+     main = "Histograma de últimos salarios con kernel Epanechnikov",
+     xlab = "Salarios",
+     ylab = "Densidad",
+     col = "lightskyblue2", breaks=20, freq = FALSE, ylim = c(0, 0.0000008))
+
+lines(density_epanechnikov,lwd=2,lty=1)
+
+# d. Coseno
+
+density_coseno <- density(ult.salario,kernel = "cosine")
+
+plot(density_coseno, main = "Coseno kernel", ylab = "Densidad")
+
+hist(ult.salario,
+     main = "Histograma de últimos salarios con kernel Coseno",
+     xlab = "Salarios",
+     ylab = "Densidad",
+     col = "lightskyblue2", breaks=20, freq = FALSE, ylim = c(0, 0.0000008))
+
+lines(density_coseno,lwd=2,lty=1)
+
+# e. Rectangular o uniforme
+
+density_uniforme <- density(ult.salario,kernel = "rectangular")
+
+plot(density_uniforme, main = "Kernel Uniforme", ylab = "Densidad")
+
+hist(ult.salario,
+     main = "Histograma de últimos salarios con kernel Uniforme",
+     xlab = "Salarios",
+     ylab = "Densidad",
+     col = "lightskyblue2", breaks=20, freq = FALSE, ylim = c(0, 0.0000008))
+
+lines(density_uniforme,lwd=2,lty=1)
+
+# f. Triangular
+
+density_triangular <- density(ult.salario,kernel = "triangular")
+
+plot(density_triangular, main = "Kernel Triangular", ylab = "Densidad")
+
+hist(ult.salario,
+     main = "Histograma de últimos salarios con kernel Triangular",
+     xlab = "Salarios",
+     ylab = "Densidad",
+     col = "lightskyblue2", breaks=20, freq = FALSE, ylim = c(0, 0.0000008))
+
+lines(density_triangular,lwd=2,lty=1)
+
+
+# Ahora queremos ver resultados de las densidades en el histograma
+
+hist(ult.salario,
+     main = "Histograma de últimos salarios con todos los Kernel",
+     xlab = "Salarios",
+     ylab = "Densidad",
+     col = "lightskyblue2", breaks=20, freq = FALSE, ylim = c(0, 0.0000008))
+
+# f. Triangular
+lines(density_triangular, lwd = 2, lty = 1, col = "blue2")
+
+# b. Normal o Gaussiano
+lines(density_normal, lwd = 2, lty = 1, col = "red2")
+
+# a. Biweight
+lines(density_biweight, lwd = 2, lty = 1, col = "cyan4")
+
+# c. Epanechnikov
+lines(density_epanechnikov, lwd = 2, lty = 1, col = "seagreen")
+
+# d. Coseno
+lines(density_coseno, lwd = 2, lty = 1, col = "hotpink1")
+
+# e. Rectangular o uniforme
+lines(density_uniforme, lwd = 2, lty = 1, col = "goldenrod2")
+
+legend("topright", legend = c("Biweight", "Normal", "Epanechnikov", "Coseno", "Rectangular", "Triangular"),
+       col = c("cyan4", "red2", "seagreen", "hotpink1", "goldenrod2", "blue2"),
+       lty = 1, lwd = 2)
