@@ -1,11 +1,12 @@
 #---Paquetes--------------------------------------------------------
 
 library(stringr) # para cambiar todas las commas a puntos en la columna Ultimo Salario
-library(ggplot2)
-library(univariateML)
-library(rriskDistributions)
-library(boot)
-library(ks)
+library(ggplot2) # para hacer los gráficos
+library(univariateML) # para hacer el análisis AIC
+library(rriskDistributions) # para hacer el análisis AIC
+library(boot) # para hacer el bootstrap
+library(ks) # para Kernel smoothing
+library(cowplot) # para hacer graficos más atractivos
 
 #---CSV y formatos--------------------------------------------------------
 
@@ -24,16 +25,26 @@ base_salarios$Ultimo.Salario <- as.numeric(str_replace_all(base_salarios$Ultimo.
 #---Parte I----------------------------------------------------
 
 #Hombres
+length(which(base_salarios$Sexo==1)) # 32723
 summary(base_salarios$Coutas[base_salarios$Sexo == 1])
 summary(base_salarios$Ultimo.Salario[base_salarios$Sexo == 1])
+varianza_cuotas_hombres <- var(base_salarios$Coutas[base_salarios$Sexo == 1])
+varianza_salarios_hombres <- var(base_salarios$Ultimo.Salario[base_salarios$Sexo == 1])
 
 #Mujeres
+length(which(base_salarios$Sexo==2)) # 73279
 summary(base_salarios$Coutas[base_salarios$Sexo == 2])
 summary(base_salarios$Ultimo.Salario[base_salarios$Sexo == 2])
+varianza_cuotas_mujeres <- var(base_salarios$Coutas[base_salarios$Sexo == 2])
+varianza_salarios_mujeres <- var(base_salarios$Ultimo.Salario[base_salarios$Sexo == 2])
 
 #Boxplot
-boxplot(Ultimo.Salario ~ Sexo, data = base_salarios, col = c("lightblue", "lightgreen"), main = "Boxplot de salario por sexo",
-        xlab = "Categoría", ylab = "Valor")
+boxplot(Ultimo.Salario ~ Sexo, data = base_salarios, col = c("lightblue", "lightgreen"), 
+        main = "Boxplot de último salario por sexo",
+        xlab = "Sexo", ylab = "Ultimo salario reportado",
+        names = c("Hombre", "Mujer")) 
+
+
 
 #Comparacion de medias
 t.test(
@@ -88,3 +99,17 @@ mean(resultado.media$t)
 mean(resultado.media$t0)
 
 plot(resultado.media)
+
+
+boxplot_salarios <- ggplot(base_salarios_temp, aes(x = Sexo, y = Ultimo.Salario, fill = Sexo)) +
+  geom_boxplot() +
+  theme_cowplot() +
+  scale_x_discrete(labels = c("Hombre", "Mujer")) +
+  scale_fill_manual(values = c("Hombre" = "lightblue", "Mujer" = "lightgreen")) +
+  labs(x = "Sexo", y = "Ultimo salario reportado")
+
+
+
+
+
+

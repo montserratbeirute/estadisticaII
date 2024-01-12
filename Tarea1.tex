@@ -1,0 +1,310 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\usepackage[margin=1in]{geometry}
+\usepackage{longtable,booktabs,array}
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{5}
+\usepackage[spanish]{babel}
+\usepackage{fontspec}
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  pdftitle={Tarea 1},
+  pdfauthor={José Ignacio Rojas Zárate, C16911; Montserrat Beirute Abarca, C10997; Valeria Vásquez Venegas, C18373},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\title{Tarea 1}
+\usepackage{etoolbox}
+\makeatletter
+\providecommand{\subtitle}[1]{% add subtitle to \maketitle
+  \apptocmd{\@title}{\par {\large #1 \par}}{}{}
+}
+\makeatother
+\subtitle{Estadística Actuarial II}
+\author{José Ignacio Rojas Zárate, C16911 \and Montserrat Beirute
+Abarca, C10997 \and Valeria Vásquez Venegas, C18373}
+\date{12 de enero de 2024}
+
+\begin{document}
+\maketitle
+
+{
+\setcounter{tocdepth}{2}
+\tableofcontents
+}
+\hypertarget{introducciuxf3n}{%
+\section{Introducción}\label{introducciuxf3n}}
+
+El presente documento prestan el código y resultados a los ejercicios de
+la Tarea 1 del curso. Para su realización, se utilizó el programa R
+studio.
+
+El presente trabajo utilizó la base de datos ``BaseSalarios'' brindada
+por el profesor Esteban Bermúdez Aguilar.
+
+La base de datos tiene 5 columnas. A continuación, se presentan los
+primeros seis registros de la base de datos ``BaseSalarios'' para poder
+explicar la información de cada columna.
+
+\begin{longtable}[]{@{}rrrrr@{}}
+\caption{Primeros 6 registros de la base de datos}\tabularnewline
+\toprule\noalign{}
+ID & Fec.Nac & Sexo & Coutas & Ultimo.Salario \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+ID & Fec.Nac & Sexo & Coutas & Ultimo.Salario \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+1 & 1945-01-30 & 1 & 323 & 2 784 093.18 \\
+2 & 1949-06-17 & 2 & 342 & 532 324.93 \\
+3 & 1951-04-19 & 2 & 13 & 225 517.69 \\
+4 & 1950-02-05 & 2 & 323 & 1 612 733.09 \\
+5 & 1952-02-06 & 2 & 185 & 1 411 502.30 \\
+6 & 1954-01-10 & 2 & 284 & 1 915 751.19 \\
+\end{longtable}
+
+La columna \textbf{ID} cuenta el número de registros disponibles, en
+este caso, se dispone de 106,002 registros. En la columna
+\textbf{Fec.Nac} se encuentra la información de la fecha de nacimiento
+de cada persona. En la tercera columna, \textbf{Sexo}, se observan los
+números 1 y 2; específicamente, si el valor de Sexo es 1, corresponde a
+hombres, y si es 2, corresponde a mujeres. La cuarta columna,
+\textbf{Cuotas} indica la cantidad de cuotas que cada persona ha
+aportado a un fondo de pensiones. Finalmente, la columna
+\textbf{Ultimo.Salario} contiene el último salario reportado, expresado
+en colones.
+
+\hypertarget{parte-i}{%
+\section{Parte I}\label{parte-i}}
+
+\hypertarget{anuxe1lisis-descriptivo-de-las-variables-cuotas-y-salarios-con-respecto-a-la-variable-sexo}{%
+\subsection{Análisis descriptivo de las variables Cuotas y Salarios con
+respecto a la variable
+Sexo}\label{anuxe1lisis-descriptivo-de-las-variables-cuotas-y-salarios-con-respecto-a-la-variable-sexo}}
+
+De las 106,002 personas que contiene la base de datos utilizada, el
+69.1\% son mujeres (73,279 mujeres). Por su parte, el 30.1\% restante
+corresponde a hombres (32,723 hombres).
+
+Es de interés conocer las diferencias o similitudes en los datos del
+número de cuotas y los salarios según el sexo.
+
+A continuación, se presenta un cuadro con un resumen estadístico de los
+datos del número de cuotas para hombres y mujeres.
+
+\begin{longtable}[]{@{}lrr@{}}
+\caption{Resumen estadístico de número de coutas por
+sexo}\tabularnewline
+\toprule\noalign{}
+Estadistico & Hombres & Mujeres \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+Estadistico & Hombres & Mujeres \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Mínimo & 1.00 & 1.00 \\
+Primer cuartil (Q1) & 61.00 & 66.00 \\
+Mediana & 124.00 & 135.00 \\
+Promedio & 135.18 & 142.97 \\
+Tercer cuartil (Q3) & 198.00 & 213.00 \\
+Máximo & 371.00 & 373.00 \\
+Varianza & 7658.28 & 8187.47 \\
+\end{longtable}
+
+Como se puede observar, tanto para mujeres como para hombres, el mínimo
+de cuotas aportadas es tan solo una.
+
+Por su parte, se puede decir que en general las mujeres de la base de
+datos aportaron más cuotas que los hombres.
+
+Se puede notar que el 25\% de los hombres aportó 61 cuotas o menos,
+mientras que en el caso de las mujeres, el 25\% aportó 66 cuotas o
+menos.
+
+Además, el 50\% de las mujeres aportó más de 135 cuotas, mientras que en
+el caso de los hombres, fue de 124 cuotas.
+
+El promedio de cuotas es más alto para las mujeres (142.97) que para los
+hombres (135.18).
+
+También, el 75\% de las mujeres aportó 213 cuotas o menos, mientras que
+en el caso de los hombres, fue de 198 cuotas.
+
+El valor máximo de cuotas aportadas para las mujeres fue de 373,
+mientras que para los hombres fue de 371.
+
+Es importante resaltar que para ambos sexos, la varianza indica que los
+datos están alejados de la media y se presenta mucha variabilidad en los
+datos de número de cuotas aportadas al fondo de pensiones.
+
+\newpage
+
+Por otra parte, a continuación, se presenta un cuadro con un resumen
+estadístico de los datos del último salario reportado para hombres y
+mujeres.
+
+\begin{longtable}[]{@{}rrr@{}}
+\caption{Resumen de Último Salario reportado por sexo}\tabularnewline
+\toprule\noalign{}
+Estadistico & Hombres & Mujeres \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+Estadistico & Hombres & Mujeres \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Mínimo & 10 880.92 & 10 223.99 \\
+Primer cuartil (Q1) & 552 498.30 & 584 757.36 \\
+Mediana & 1 105 231.38 & 1 062 461.32 \\
+Promedio & 1 157 201.59 & 1 046 661.46 \\
+Tercer cuartil (Q3) & 1 611 785.71 & 1 403 025.79 \\
+Máximo & 13 199 891.69 & 7 290 150.00 \\
+Varianza & 509 080 243 512.55 & 287 419 606 660.60 \\
+\end{longtable}
+
+En el Cuadro 3, se observa que el salario más bajo reportado le
+pertenece a una mujer, siendo tan solo 656.93 colones menos que el
+salario más bajo de los hombres.
+
+En cuanto al Q1, se destaca que el 25\% de los hombres tuvieron un
+último salario reportado de 552,498 colones o menos, mientras que el
+25\% de las mujeres tuvieron un último salario de 584,757 colones o
+menos. Es decir, en los últimos salarios más bajos, las mujeres
+experimentaron ingresos superiores a los de los hombres.
+
+Ahora en relación a la mediana, la mitad de los hombres ganó más de
+1,105,231 colones, mientras que la mitad de las mujeres ganó menos
+(1,046,661 colones).
+
+Además, el promedio de los últimos salarios fue mayor para los hombres,
+aproximadamente 110,540 colones más alto.
+
+Las diferencias se incrementan a medida que se consideran los últimos
+salarios más altos. El 75\% de las mujeres ganaron 1 403 025.79 o menos,
+mientras que el 75\% de los hombres ganaron 1 611 786 colones o menos.
+
+El salario máximo reportado por hombres es 5 909 742 colones más alto
+que el de las mujeres.
+
+Es importante resaltar que la varianza para ambos sexos señala que los
+datos están muy dispersos de la media, es decir hay una gran
+variabilidad en los datos de último salario reportado.
+
+\newpage
+
+\hypertarget{gruxe1fico-plotbox-para-el-salario-para-comparar-entre-las-categoruxedas-de-sexo}{%
+\subsection{Gráfico plotbox para el salario para comparar entre las
+categorías de
+Sexo}\label{gruxe1fico-plotbox-para-el-salario-para-comparar-entre-las-categoruxedas-de-sexo}}
+
+El siguiente gráfico plotbox permite tener una representación visual de
+como se distribuyen los datos para cada sexo.
+
+\includegraphics{Tarea1_files/figure-latex/unnamed-chunk-7-1.pdf}
+
+Este gráfico destaca la presencia de salarios atípicos, identificados
+como aquellos que están fuera de cada una de las cajas. Específicamente,
+en el caso de los hombres, se observan dos salarios que se encuentran
+notablemente por encima del resto de los salarios reportados, indicando
+la presencia de valores atípicos significativos.
+
+\hypertarget{conclusiones-con-respecto-a-los-salarios-y-sexo}{%
+\subsection{Conclusiones con respecto a los salarios y
+sexo}\label{conclusiones-con-respecto-a-los-salarios-y-sexo}}
+
+Después de realizar el análisis descriptivo de los datos e interpretar
+la gráfica de Boxplot, se concluye que al dividir la población por sexo,
+el 25\% de los hombres con los salarios más bajos ganan menos que el
+25\% de las mujeres con salarios más bajos. Sin embargo, cuando se
+considera el 50\% de los hombres que ganan más, estos perciben un
+salario mayor que el 50\% de las mujeres que ganan más. Esta tendencia
+se evidencia claramente en el gráfico anterior, donde la parte superior
+de la caja, que está por encima de la línea de la mediana, es más amplia
+en el caso de los hombres.
+
+Para respaldar este argumento, se observa que el promedio de los últimos
+salarios fue mayor para los hombres, aproximadamente 110,540 colones más
+alto que el de las mujeres.
+
+No obstante, es importante señalar que la varianza de los salarios es
+mayor para los hombres, y los valores atípicos en los salarios
+masculinos también son más altos que los de las mujeres.
+
+En este sentido, los salarios de los hombres parecen ser relativamente
+más altos que los de las mujeres, aunque las diferencias no resultan
+significativas.
+
+\end{document}
