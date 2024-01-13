@@ -203,6 +203,41 @@ Para respaldar este argumento, se observa que el promedio de los últimos salari
 
 No obstante, es importante señalar que la varianza de los salarios es mayor para los hombres, y los valores atípicos en los salarios masculinos también son más altos que los de las mujeres.
 
-En este sentido, los salarios de los hombres parecen ser relativamente más altos que los de las mujeres, aunque las diferencias no resultan significativas. 
+En este sentido, los salarios de los hombres parecen ser relativamente más altos que los de las mujeres, aunque las diferencias no resultan significativas. Ambos tienen personas con salarios más altos que la mayoría. 
+
+
+## Prueba de hipótesis sobre las medias de las categorías de sexo
+
+En relación a las medias, se cree que las medias de los salarios para hombres y mujeres son diferentes.
+Para verificar lo expresado anteriormente, se llevó a cabo la siguiente prueba de hipótesis. 
+
+En este caso, se llevó a cabo un **Welch Two Sample t-test**, la cual es una prueba estadística que permite comparar las medias de dos muestras. En este caso, el tamaño de las muestras y sus varianzas difieren. 
+
+Para realizar una prueba de hipótesis se necesitan tres cosas: la hipótesis nula (H0), el estadístico de prueba (t) y la distribución del estadístico de prueba. 
+
+En este caso particular: 
+
+1. H0: La diferencia entre la media de los últimos salarios de los hombres y la media de los últimos salarios de las mujeres es 0.
+2. El estadístico de prueba es t, el cual se puede calcular de la siguiente manera: \[ t = \frac{\bar{X}_1 - \bar{X}_2}{\sqrt{\frac{s_1^2}{n_1} + \frac{s_2^2}{n_2}}} \]
+donde \( \bar{X}_1 \) y \( \bar{X}_2 \) son las medias de cada una de las muestras,
+\( s_1 \) y \( s_2 \) son las desviaciones estándar de los dos muestras,
+\( n_1 \) y \( n_2 \) son el tamaño de cada una de las muestras. 
+3. Por último, el estadístico t sigue una distribución t con \( v \) grados de libertad, la cual se calcula utilizando la equación Welch–Satterthwaite.
+
+A continuación se presenta el código de la prueba y la interpretación de los resultados:
+
+```{r, results='markup'}
+t.test(
+  x           = base_salarios$Ultimo.Salario[base_salarios$Sexo == 1],
+  y           = base_salarios$Ultimo.Salario[base_salarios$Sexo == 2],
+  paired      = FALSE,
+  alternative = "two.sided",
+  conf.level  = 0.95
+)
+```
+
+El p-valor lo que dice es si se asume la H0 como verdadera, la probabilidad de que H0 sea verdadera. En este caso, el valor p fue menor a \( 2.2e^{16} \) lo cual es muy cercano a 0, es decir, hay una probabilidad muy pequeña de que la media de los últimos salarios entre hombres y mujeres sea 0, es decir, que sea la misma. Por tanto, existe suficiente evidencia para rechazar la hipotesis nula. 
+
+
 
 

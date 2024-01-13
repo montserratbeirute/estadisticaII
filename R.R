@@ -101,13 +101,6 @@ mean(resultado.media$t0)
 plot(resultado.media)
 
 
-boxplot_salarios <- ggplot(base_salarios_temp, aes(x = Sexo, y = Ultimo.Salario, fill = Sexo)) +
-  geom_boxplot() +
-  theme_cowplot() +
-  scale_x_discrete(labels = c("Hombre", "Mujer")) +
-  scale_fill_manual(values = c("Hombre" = "lightblue", "Mujer" = "lightgreen")) +
-  labs(x = "Sexo", y = "Ultimo salario reportado")
-
 
 
 
