@@ -7,6 +7,7 @@ library(rriskDistributions) # para hacer el análisis AIC
 library(boot) # para hacer el bootstrap
 library(ks) # para Kernel smoothing
 library(cowplot) # para hacer graficos más atractivos
+library(scales)
 
 #---CSV y formatos--------------------------------------------------------
 
@@ -57,9 +58,15 @@ t.test(
 
 #---Parte II----------------------------------------------------
 #Histograma salarios
-ggplot(base_salarios, aes(x= Ultimo.Salario)) +
+
+ggplot(base_salarios, aes(x = Ultimo.Salario)) +
   geom_histogram(binwidth = 150000, fill = "lightblue", color = "black", alpha = 0.7) +
-  labs(title = "Histograma Simple", x = "Valor", y = "Frecuencia")
+  labs(title = "Histograma de los últimos salarios reportados", x = "Salario en miles de colones", y = "Frecuencia") +
+  theme_cowplot() +
+  scale_x_continuous(
+    breaks = seq(min(base_salarios$Ultimo.Salario), max(base_salarios$Ultimo.Salario), length.out = 8),
+    labels = scales::label_number(big.mark = " ", decimal.mark = ".", scale = 1e-3)
+  )
 
 #Kernels
 kernels <- eval(formals(density.default)$kernel)[1:6]

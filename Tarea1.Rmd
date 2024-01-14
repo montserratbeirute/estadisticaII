@@ -239,5 +239,40 @@ t.test(
 El p-valor lo que dice es si se asume la H0 como verdadera, la probabilidad de que H0 sea verdadera. En este caso, el valor p fue menor a \( 2.2e^{16} \) lo cual es muy cercano a 0, es decir, hay una probabilidad muy pequeña de que la media de los últimos salarios entre hombres y mujeres sea 0, es decir, que sea la misma. Por tanto, existe suficiente evidencia para rechazar la hipotesis nula. 
 
 
+# Parte II
 
+## Construcción del Histograma de los salarios
+
+```{r, echo=FALSE}
+
+ggplot(base_salarios, aes(x = Ultimo.Salario)) +
+  geom_histogram(binwidth = 150000, fill = "lightblue", color = "black", alpha = 0.7) +
+  labs(title = "Histograma de los últimos salarios reportados", x = "Salario en miles de colones", y = "Frecuencia") +
+  theme_cowplot() +
+  scale_x_continuous(
+    breaks = seq(min(base_salarios$Ultimo.Salario), max(base_salarios$Ultimo.Salario), length.out = 8),
+    labels = scales::label_number(big.mark = " ", decimal.mark = ".", scale = 1e-3)
+  )
+
+
+```
+
+## Densidad de los salarios por kernel (no paramétrica)
+
+### Densidad de los salarios por kernel (no paramétrica) usando como kernel Biweigth 
+
+```{r, echo=FALSE}
+kernels <- eval(formals(density.default)$kernel)[1:6]
+
+ggplot(base_salarios, aes(x = Ultimo.Salario)) +
+  geom_density(binwidth = 150000, fill = "lightblue", color = "black", alpha = 0.7, freq = FALSE) +
+  labs(title = "Histograma de los últimos salarios reportados", x = "Salario en miles de colones", y = "Frecuencia") +
+  theme_cowplot() +
+  scale_x_continuous(
+    breaks = seq(min(base_salarios$Ultimo.Salario), max(base_salarios$Ultimo.Salario), length.out = 8),
+    labels = scales::label_number(big.mark = " ", decimal.mark = ".", scale = 1e-3)
+  )
+
+
+```
 
