@@ -87,13 +87,10 @@ model_select(base_salarios$Ultimo.Salario)
 fit.cont(base_salarios$Ultimo.Salario)
 
 #intervalo bootsrap
+distribucionml <- mlweibull(base_salarios$Ultimo.Salario)
 
-?bootstrapml
-
-resultado.media <- boot(data = base_salarios$Ultimo.Salario, statistic = function(data,indices) mean(data[indices]), R = 1000)
-mean(resultado.media$t)
-resultado.sd <- boot(data = base_salarios$Ultimo.Salario, statistic = function(data,indices) sd(data[indices]), R = 1000)
-mean(resultado.sd$t)
+bootstrapml(base_salarios$Ultimo.Salario, map = function(x) mean(x))
+bootstrapml(base_salarios$Ultimo.Salario, map = function(x) sd(x))
 
 #---Parte IV----------------------------------------------------
 densidad_kde <- kde(base_salarios$Ultimo.Salario)

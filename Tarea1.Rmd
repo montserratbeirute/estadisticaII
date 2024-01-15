@@ -390,3 +390,36 @@ ggplot(base_salarios, aes(x = Ultimo.Salario)) +
 
 ```
 
+#Parte III
+
+El Criterio de Información de Akaike (AIC) es una medida utilizada en estadísticas y modelado para comparar modelos estadísticos.El AIC se calcula utilizando la siguiente fórmula:
+
+\[ AIC= 2*N−2*log(L) \]
+
+Donde \[L\] representa la funcion de máxima verosimilitud del modelo y \[N\] representa el número de parámetros en el modelo. El modelo penaliza aquellos modelos que utilizan varios parámetros, ya que se busca el modelo con mayor simpleza. Cuando se comparan varios modelos, el modelo con el AIC más bajo se considera preferido.
+
+##Análisis del AIC de la variable Ultimo.Salario mediante la función model_select
+```{r, results='markup'}
+model_select(base_salarios$Ultimo.Salario)
+```
+
+Vemos que la funcion model select del paquete univariateML sugiere una distribución t-student para representar los datos de Ultimo.Salario.
+
+##Análisis del AIC de la variable Ultimo.Salario mediante la función fit.cont
+```{r, results='markup'}
+fit.cont(base_salarios$Ultimo.Salario)
+```
+
+Bajo el criterio de AIC el modelo con el valor mas bajo es el Weibull, seguido por el Logistic con una diferencia de 13 042 unidades. Mientras que la diferencia entre el Weibull y el Student es de 745 301 unidades. Es debido a ello que se escoge Weibull para representar nuestros datos de salarios.
+
+##Construcción de un intervalo de confianza para la media y la desviación estándar usando la función bootstrapml
+```{r, results='markup'}
+#Creamos un objeto de distribución
+distribucionml <- mlweibull(base_salarios$Ultimo.Salario)
+
+bootstrapml(distribucionml, 
+            map = function(x) mean(x))
+bootstrapml(distribucionml, 
+            map = function(x) sd(x))
+```
+
