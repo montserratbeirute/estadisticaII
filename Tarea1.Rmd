@@ -259,19 +259,133 @@ ggplot(base_salarios, aes(x = Ultimo.Salario)) +
 
 ## Densidad de los salarios por kernel (no paramétrica)
 
-### Densidad de los salarios por kernel (no paramétrica) usando como kernel Biweigth 
+### Densidad de los salarios por kernel usando como kernel Biweigth 
 
-```{r, echo=FALSE}
-kernels <- eval(formals(density.default)$kernel)[1:6]
+```{r, echo=FALSE, warning=FALSE}
+
+density_biweight <- density(base_salarios$Ultimo.Salario, kernel = "biweight")
 
 ggplot(base_salarios, aes(x = Ultimo.Salario)) +
-  geom_density(binwidth = 150000, fill = "lightblue", color = "black", alpha = 0.7, freq = FALSE) +
-  labs(title = "Histograma de los últimos salarios reportados", x = "Salario en miles de colones", y = "Frecuencia") +
+  geom_histogram(binwidth = 150000, fill = "lightblue", color = "black", alpha = 0.7, aes(y = ..density..)) +
+  geom_line(data = data.frame(x = density_biweight$x, y = density_biweight$y),
+            aes(x, y), color = "cyan4", size = 1) +  
+  labs(title = "Densidad de los últimos salarios reportados ", subtitle = "con Kernel Biweight", x = "Salario en miles de colones", y = "Densidad") +
   theme_cowplot() +
   scale_x_continuous(
     breaks = seq(min(base_salarios$Ultimo.Salario), max(base_salarios$Ultimo.Salario), length.out = 8),
     labels = scales::label_number(big.mark = " ", decimal.mark = ".", scale = 1e-3)
   )
+
+
+
+```
+
+### Densidad de los salarios por kernel usando como kernel Normal
+
+```{r, echo=FALSE, warning=FALSE}
+
+density_normal <- density(base_salarios$Ultimo.Salario,kernel = "gaussian")
+
+ggplot(base_salarios, aes(x = Ultimo.Salario)) +
+  geom_histogram(binwidth = 150000, fill = "lightblue", color = "black", alpha = 0.7, aes(y = ..density..)) +
+  geom_line(data = data.frame(x = density_normal$x, y = density_normal$y),
+            aes(x, y), color = "red3", size = 1) +  
+  labs(title = "Densidad de los últimos salarios reportados ", subtitle = "con Kernel Normal", x = "Salario en miles de colones", y = "Densidad") +
+  theme_cowplot() +
+  scale_x_continuous(
+    breaks = seq(min(base_salarios$Ultimo.Salario), max(base_salarios$Ultimo.Salario), length.out = 8),
+    labels = scales::label_number(big.mark = " ", decimal.mark = ".", scale = 1e-3)
+  )
+
+```
+
+
+### Densidad de los salarios por kernel usando como kernel Epanechnikov
+
+```{r, echo=FALSE, warning=FALSE}
+
+density_epanechnikov <- density(base_salarios$Ultimo.Salario,kernel = "epanechnikov")
+
+ggplot(base_salarios, aes(x = Ultimo.Salario)) +
+  geom_histogram(binwidth = 150000, fill = "lightblue", color = "black", alpha = 0.7, aes(y = ..density..)) +
+  geom_line(data = data.frame(x = density_epanechnikov$x, y = density_epanechnikov$y),
+            aes(x, y), color = "seagreen", size = 1) +  
+  labs(title = "Densidad de los últimos salarios reportados ",subtitle = "con Kernel Epanechnikov", x = "Salario en miles de colones", y = "Densidad") +
+  theme_cowplot() +
+  scale_x_continuous(
+    breaks = seq(min(base_salarios$Ultimo.Salario), max(base_salarios$Ultimo.Salario), length.out = 8),
+    labels = scales::label_number(big.mark = " ", decimal.mark = ".", scale = 1e-3)
+  )
+
+```
+
+### Densidad de los salarios por kernel usando como kernel Coseno
+
+```{r, echo=FALSE, warning=FALSE}
+
+density_coseno <- density(base_salarios$Ultimo.Salario,kernel = "cosine")
+
+ggplot(base_salarios, aes(x = Ultimo.Salario)) +
+  geom_histogram(binwidth = 150000, fill = "lightblue", color = "black", alpha = 0.7, aes(y = ..density..)) +
+  geom_line(data = data.frame(x = density_coseno$x, y = density_coseno$y),
+            aes(x, y), color = "hotpink1", size = 1) +  
+  labs(title = "Densidad de los últimos salarios reportados ",subtitle = "con Kernel Coseno", x = "Salario en miles de colones", y = "Densidad") +
+  theme_cowplot() +
+  scale_x_continuous(
+    breaks = seq(min(base_salarios$Ultimo.Salario), max(base_salarios$Ultimo.Salario), length.out = 8),
+    labels = scales::label_number(big.mark = " ", decimal.mark = ".", scale = 1e-3)
+  )
+
+```
+
+
+### Densidad de los salarios por kernel usando como kernel Rectangular
+
+```{r, echo=FALSE, warning=FALSE}
+
+density_rectangular <- density(base_salarios$Ultimo.Salario,kernel = "rectangular")
+
+ggplot(base_salarios, aes(x = Ultimo.Salario)) +
+  geom_histogram(binwidth = 150000, fill = "lightblue", color = "black", alpha = 0.7, aes(y = ..density..)) +
+  geom_line(data = data.frame(x = density_rectangular$x, y = density_rectangular$y),
+            aes(x, y), color = "goldenrod2", size = 1) +  
+  labs(title = "Densidad de los últimos salarios reportados ",subtitle = "con Kernel Rectangular", x = "Salario en miles de colones", y = "Densidad") +
+  theme_cowplot() +
+  scale_x_continuous(
+    breaks = seq(min(base_salarios$Ultimo.Salario), max(base_salarios$Ultimo.Salario), length.out = 8),
+    labels = scales::label_number(big.mark = " ", decimal.mark = ".", scale = 1e-3)
+  )
+
+```
+
+### Densidad de los salarios con todos los kernel
+
+```{r, echo=FALSE, warning=FALSE}
+
+ggplot(base_salarios, aes(x = Ultimo.Salario)) +
+  geom_histogram(binwidth = 150000, fill = "lightblue", color = "black", alpha = 0.7, aes(y = ..density..)) +
+  geom_line(data = data.frame(x = density_normal$x, y = density_normal$y),
+            aes(x, y, color = "Normal"), size = 1.5) +
+  geom_line(data = data.frame(x = density_biweight$x, y = density_biweight$y),
+            aes(x, y, color = "Biweight"), size = 1.4) +
+  geom_line(data = data.frame(x = density_coseno$x, y = density_coseno$y),
+            aes(x, y, color = "Coseno"), size = 1.3) +
+  geom_line(data = data.frame(x = density_rectangular$x, y = density_rectangular$y),
+            aes(x, y, color = "Rectangular"), size = 1.2) +
+  geom_line(data = data.frame(x = density_epanechnikov$x, y = density_epanechnikov$y),
+            aes(x, y, color = "Epanechnikov"), size = 1.1) +
+  labs(title = "Densidad de los últimos salarios reportados", x = "Salario en miles de colones", y = "Densidad") +
+  theme_cowplot() +
+  scale_x_continuous(
+    breaks = seq(min(base_salarios$Ultimo.Salario), max(base_salarios$Ultimo.Salario), length.out = 8),
+    labels = scales::label_number(big.mark = " ", decimal.mark = ".", scale = 1e-3)
+  ) +
+  scale_color_manual(values = c("red3", "cyan4", "hotpink1", "goldenrod2", "seagreen"),
+                     name = "Kernel",
+                     labels = c("Normal", "Biweight", "Coseno", "Rectangular", "Epanechnikov")) +
+  theme(legend.text = element_text(size = 6),
+        legend.title = element_text(size = 9))
+
 
 
 ```

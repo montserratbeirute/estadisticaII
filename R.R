@@ -109,7 +109,3 @@ plot(resultado.media)
 
 
 
-
-
-
-
