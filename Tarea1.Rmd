@@ -47,6 +47,7 @@ library(ks) # para Kernel smoothing
 library(knitr) # para presentar mejor los datos en formato tabla
 options(scipen = 999) # para que no me salga notacion cientifica
 library(cowplot) # para hacer graficos más atractivos
+library(ks) #para hacer estimacion de la densidad del kernel
 #---CSV y formatos----------------------------------------------------
 
 # Abrir y dar formato a la base de datos
@@ -390,7 +391,7 @@ ggplot(base_salarios, aes(x = Ultimo.Salario)) +
 
 ```
 
-#Parte III
+# Parte III
 
 El Criterio de Información de Akaike (AIC) es una medida utilizada en estadísticas y modelado para comparar modelos estadísticos.El AIC se calcula utilizando la siguiente fórmula:
 
@@ -398,21 +399,21 @@ El Criterio de Información de Akaike (AIC) es una medida utilizada en estadíst
 
 Donde \[L\] representa la funcion de máxima verosimilitud del modelo y \[N\] representa el número de parámetros en el modelo. El modelo penaliza aquellos modelos que utilizan varios parámetros, ya que se busca el modelo con mayor simpleza. Cuando se comparan varios modelos, el modelo con el AIC más bajo se considera preferido.
 
-##Análisis del AIC de la variable Ultimo.Salario mediante la función model_select
+## Análisis del AIC de la variable Ultimo.Salario mediante la función model_select
 ```{r, results='markup'}
 model_select(base_salarios$Ultimo.Salario)
 ```
 
 Vemos que la funcion model select del paquete univariateML sugiere una distribución t-student para representar los datos de Ultimo.Salario.
 
-##Análisis del AIC de la variable Ultimo.Salario mediante la función fit.cont
+## Análisis del AIC de la variable Ultimo.Salario mediante la función fit.cont
 ```{r, results='markup'}
 fit.cont(base_salarios$Ultimo.Salario)
 ```
 
 Bajo el criterio de AIC el modelo con el valor mas bajo es el Weibull, seguido por el Logistic con una diferencia de 13 042 unidades. Mientras que la diferencia entre el Weibull y el Student es de 745 301 unidades. Es debido a ello que se escoge Weibull para representar nuestros datos de salarios.
 
-##Construcción de un intervalo de confianza para la media y la desviación estándar usando la función bootstrapml
+## Construcción de un intervalo de confianza para la media y la desviación estándar usando la función bootstrapml
 ```{r, results='markup'}
 #Creamos un objeto de distribución
 distribucionml <- mlweibull(base_salarios$Ultimo.Salario)
@@ -423,3 +424,39 @@ bootstrapml(distribucionml,
             map = function(x) sd(x))
 ```
 
+# Parte IV
+
+## Estimación de la densidad del kernel
+
+La funcion kde(Kernel Density Estimation) del paquete ks en R, tal como indica su nombre, realiza una estimación no paramétrica de la densidad de kernel de datos de 1 hasta 6 dimensiones. Esta función es comúnmente utilizada cuando la función de distribución de los datos es irregular, ya que kde() genera una función suavizada de la misma.
+
+
+```{r, echo=FALSE, warning=FALSE}
+plot(kde(base_salarios$Ultimo.Salario),  main = "Densidad de Kernel para los Salarios", xlab = "Monto del Salario", ylab= "Función de Densidad", col = "magenta2", lwd = 2, las = 1, cex.axis=0.5, cex.lab = 0.8)
+
+```
+
+## Intervalos de confianza con bootstrap
+
+La función boot.ci del paquete boot en R se utiliza para calcular los intervalos de confianza de un estadístico determinado, para lo cual la función realiza un remuestreo bootstrap del estadístico con la muestra de datos proporcionada. Esta función calcula los intervalos de confianza mediante 4 métodos diferentes de bootstrap: básico, 'studentized', de percentiles y de percentiles ajustados.
+
+
+## Bootstrap de la media de los salarios
+
+### Estimación de la media del Bootstrap
+```{r, results='markup'}
+set.seed(123)
+bootstrap <- boot(data = base_salarios$Ultimo.Salario, 
+                  statistic = function(x, indices) mean(x[indices]), R=1000)
+mean(bootstrap$t)
+bootstrap$t0 
+boot.ci(bootstrap, conf = 0.95, type = "basic")
+```
+
+
+### Histograma de los resultados
+
+```{r, echo=FALSE, warning=FALSE}
+hist(bootstrap$t, las = 1, main = "Histograma de las Medias de Salarios", xlab = "Media Bootstrap", ylab = "Frecuencia")
+
+```
