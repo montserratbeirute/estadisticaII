@@ -128,7 +128,7 @@
 \subtitle{Estadística Actuarial II}
 \author{José Ignacio Rojas Zárate, C16911 \and Montserrat Beirute
 Abarca, C10997 \and Valeria Vásquez Venegas, C18373}
-\date{17 de enero de 2024}
+\date{18 de enero de 2024}
 
 \begin{document}
 \maketitle
@@ -264,18 +264,21 @@ siguiente código:
 \begin{Highlighting}[]
 \NormalTok{resumen\_cuotas\_hombres }\OtherTok{\textless{}{-}}\FunctionTok{summary}\NormalTok{(base\_salarios}\SpecialCharTok{$}\NormalTok{Coutas[base\_salarios}\SpecialCharTok{$}\NormalTok{Sexo }\SpecialCharTok{==} \DecValTok{1}\NormalTok{])}
 
-\NormalTok{varianza\_cuotas\_hombres }\OtherTok{\textless{}{-}} \FunctionTok{var}\NormalTok{(base\_salarios}\SpecialCharTok{$}\NormalTok{Coutas[base\_salarios}\SpecialCharTok{$}\NormalTok{Sexo }\SpecialCharTok{==} \DecValTok{1}\NormalTok{])}
+\NormalTok{varianza\_cuotas\_hombres }\OtherTok{\textless{}{-}} \FunctionTok{var}\NormalTok{(base\_salarios}\SpecialCharTok{$}\NormalTok{Coutas}
+\NormalTok{                               [base\_salarios}\SpecialCharTok{$}\NormalTok{Sexo }\SpecialCharTok{==} \DecValTok{1}\NormalTok{])}
 
 \NormalTok{resumen\_cuotas\_hombres }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(resumen\_cuotas\_hombres, }\AttributeTok{Varianza =}\NormalTok{ varianza\_cuotas\_hombres)}
 
 \NormalTok{resumen\_cuotas\_mujeres }\OtherTok{\textless{}{-}}\FunctionTok{summary}\NormalTok{(base\_salarios}\SpecialCharTok{$}\NormalTok{Coutas[base\_salarios}\SpecialCharTok{$}\NormalTok{Sexo }\SpecialCharTok{==} \DecValTok{2}\NormalTok{])}
 
-\NormalTok{varianza\_cuotas\_mujeres }\OtherTok{\textless{}{-}} \FunctionTok{var}\NormalTok{(base\_salarios}\SpecialCharTok{$}\NormalTok{Coutas[base\_salarios}\SpecialCharTok{$}\NormalTok{Sexo }\SpecialCharTok{==} \DecValTok{2}\NormalTok{])}
+\NormalTok{varianza\_cuotas\_mujeres }\OtherTok{\textless{}{-}} \FunctionTok{var}\NormalTok{(base\_salarios}\SpecialCharTok{$}\NormalTok{Coutas}
+\NormalTok{                               [base\_salarios}\SpecialCharTok{$}\NormalTok{Sexo }\SpecialCharTok{==} \DecValTok{2}\NormalTok{])}
 
 \NormalTok{resumen\_cuotas\_mujeres }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(resumen\_cuotas\_mujeres, }\AttributeTok{Varianza =}\NormalTok{ varianza\_cuotas\_mujeres)}
 
 \NormalTok{cuotas\_resumen }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(}
-  \AttributeTok{Estadistico =} \FunctionTok{c}\NormalTok{(}\StringTok{"Mínimo"}\NormalTok{, }\StringTok{"Primer cuartil (Q1)"}\NormalTok{, }\StringTok{"Mediana"}\NormalTok{, }\StringTok{"Promedio"}\NormalTok{, }\StringTok{"Tercer cuartil (Q3)"}\NormalTok{, }\StringTok{"Máximo"}\NormalTok{, }\StringTok{"Varianza"}\NormalTok{),}
+  \AttributeTok{Estadistico =} \FunctionTok{c}\NormalTok{(}\StringTok{"Mínimo"}\NormalTok{, }\StringTok{"Primer cuartil (Q1)"}\NormalTok{, }\StringTok{"Mediana"}\NormalTok{, }\StringTok{"Promedio"}\NormalTok{,}
+                  \StringTok{"Tercer cuartil (Q3)"}\NormalTok{, }\StringTok{"Máximo"}\NormalTok{, }\StringTok{"Varianza"}\NormalTok{),}
   \AttributeTok{Hombres =} \FunctionTok{as.numeric}\NormalTok{(}\FunctionTok{round}\NormalTok{(resumen\_cuotas\_hombres,}\DecValTok{2}\NormalTok{)),}
   \AttributeTok{Mujeres =} \FunctionTok{as.numeric}\NormalTok{(}\FunctionTok{round}\NormalTok{(resumen\_cuotas\_mujeres,}\DecValTok{2}\NormalTok{))}
 \NormalTok{)}
@@ -341,13 +344,15 @@ como para mujeres.
 \begin{Highlighting}[]
 \NormalTok{resumen\_salarios\_hombres }\OtherTok{\textless{}{-}}\FunctionTok{summary}\NormalTok{(base\_salarios}\SpecialCharTok{$}\NormalTok{Ultimo.Salario[base\_salarios}\SpecialCharTok{$}\NormalTok{Sexo }\SpecialCharTok{==} \DecValTok{1}\NormalTok{])}
 
-\NormalTok{varianza\_salarios\_hombres }\OtherTok{\textless{}{-}} \FunctionTok{var}\NormalTok{(base\_salarios}\SpecialCharTok{$}\NormalTok{Ultimo.Salario[base\_salarios}\SpecialCharTok{$}\NormalTok{Sexo }\SpecialCharTok{==} \DecValTok{1}\NormalTok{])}
+\NormalTok{varianza\_salarios\_hombres }\OtherTok{\textless{}{-}} \FunctionTok{var}\NormalTok{(base\_salarios}\SpecialCharTok{$}\NormalTok{Ultimo.Salario}
+\NormalTok{                                 [base\_salarios}\SpecialCharTok{$}\NormalTok{Sexo }\SpecialCharTok{==} \DecValTok{1}\NormalTok{])}
 
 \NormalTok{resumen\_salarios\_hombres }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(resumen\_salarios\_hombres, }\AttributeTok{Varianza =}\NormalTok{ varianza\_salarios\_hombres)}
 
 \NormalTok{resumen\_salarios\_mujeres }\OtherTok{\textless{}{-}}\FunctionTok{summary}\NormalTok{(base\_salarios}\SpecialCharTok{$}\NormalTok{Ultimo.Salario[base\_salarios}\SpecialCharTok{$}\NormalTok{Sexo }\SpecialCharTok{==} \DecValTok{2}\NormalTok{])}
 
-\NormalTok{varianza\_salarios\_mujeres }\OtherTok{\textless{}{-}} \FunctionTok{var}\NormalTok{(base\_salarios}\SpecialCharTok{$}\NormalTok{Ultimo.Salario[base\_salarios}\SpecialCharTok{$}\NormalTok{Sexo }\SpecialCharTok{==} \DecValTok{2}\NormalTok{])}
+\NormalTok{varianza\_salarios\_mujeres }\OtherTok{\textless{}{-}} \FunctionTok{var}\NormalTok{(base\_salarios}\SpecialCharTok{$}\NormalTok{Ultimo.Salario}
+\NormalTok{                                 [base\_salarios}\SpecialCharTok{$}\NormalTok{Sexo }\SpecialCharTok{==} \DecValTok{2}\NormalTok{])}
 
 \NormalTok{resumen\_salarios\_mujeres }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(resumen\_salarios\_mujeres, }\AttributeTok{Varianza =}\NormalTok{ varianza\_salarios\_mujeres)}
 
@@ -553,7 +558,9 @@ menores a 1 820 000 colones.
        \AttributeTok{y =} \StringTok{"Frecuencia"}\NormalTok{) }\SpecialCharTok{+}
   \FunctionTok{theme\_cowplot}\NormalTok{() }\SpecialCharTok{+}
   \FunctionTok{scale\_x\_continuous}\NormalTok{(}
-    \AttributeTok{breaks =} \FunctionTok{seq}\NormalTok{(}\FunctionTok{min}\NormalTok{(base\_salarios}\SpecialCharTok{$}\NormalTok{Ultimo.Salario), }\FunctionTok{max}\NormalTok{(base\_salarios}\SpecialCharTok{$}\NormalTok{Ultimo.Salario), }\AttributeTok{length.out =} \DecValTok{10}\NormalTok{),}
+    \AttributeTok{breaks =} \FunctionTok{seq}\NormalTok{(}\FunctionTok{min}\NormalTok{(base\_salarios}\SpecialCharTok{$}\NormalTok{Ultimo.Salario), }
+                 \FunctionTok{max}\NormalTok{(base\_salarios}\SpecialCharTok{$}\NormalTok{Ultimo.Salario), }
+                 \AttributeTok{length.out =} \DecValTok{10}\NormalTok{),}
     \AttributeTok{labels =}\NormalTok{ scales}\SpecialCharTok{::}\FunctionTok{label\_number}\NormalTok{(}\AttributeTok{big.mark =} \StringTok{" "}\NormalTok{, }\AttributeTok{decimal.mark =} \StringTok{"."}\NormalTok{, }\AttributeTok{scale =} \FloatTok{1e{-}3}\NormalTok{))}
 
 \NormalTok{grafBase}
@@ -735,8 +742,8 @@ calcula utilizando la siguiente fórmula:
 
 \[ AIC= 2*N−2*log(L) \]
 
-Donde \[L\] representa la funcion de máxima verosimilitud del modelo y
-\[N\] representa el número de parámetros en el modelo. El modelo
+Donde \(L\) representa la funcion de máxima verosimilitud del modelo y
+\(N\) representa el número de parámetros en el modelo. El modelo
 penaliza aquellos modelos que utilizan varios parámetros, ya que se
 busca el modelo con mayor simpleza. Cuando se comparan varios modelos,
 el modelo con el AIC más bajo se considera preferido.
@@ -811,7 +818,7 @@ bootstrapml}\label{construcciuxf3n-de-un-intervalo-de-confianza-para-la-media-y-
 
 \begin{verbatim}
 ##     2.5%    97.5% 
-## 606971.1 610993.1
+## 606868.0 610926.5
 \end{verbatim}
 
 Es decir, con una confianza del 95\%, al aplicar bootstrapml, se estima
@@ -827,7 +834,7 @@ colones y los 611 076.8 colones.
 
 \begin{verbatim}
 ##     2.5%    97.5% 
-## 858230.8 864269.3
+## 858352.0 864232.8
 \end{verbatim}
 
 Por su parte, la desviación estándar de la distribución Weibull al
@@ -848,7 +855,9 @@ ya que, kde() genera una función suavizada de la misma.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\FunctionTok{plot}\NormalTok{(}\FunctionTok{kde}\NormalTok{(base\_salarios}\SpecialCharTok{$}\NormalTok{Ultimo.Salario),  }\AttributeTok{main =} \StringTok{"Densidad de Kernel para los Salarios"}\NormalTok{, }\AttributeTok{xlab =} \StringTok{"Monto del Salario"}\NormalTok{, }\AttributeTok{ylab=} \StringTok{"Función de Densidad"}\NormalTok{, }\AttributeTok{col =} \StringTok{"cyan4"}\NormalTok{, }\AttributeTok{lwd =} \DecValTok{2}\NormalTok{, }\AttributeTok{las =} \DecValTok{1}\NormalTok{, }\AttributeTok{cex.axis=}\FloatTok{0.5}\NormalTok{, }\AttributeTok{cex.lab =} \FloatTok{0.8}\NormalTok{)}
+\FunctionTok{plot}\NormalTok{(}\FunctionTok{kde}\NormalTok{(base\_salarios}\SpecialCharTok{$}\NormalTok{Ultimo.Salario),  }\AttributeTok{main =} \StringTok{"Densidad de Kernel para los Salarios"}\NormalTok{, }
+     \AttributeTok{xlab =} \StringTok{"Monto del Salario"}\NormalTok{, }\AttributeTok{ylab=} \StringTok{"Función de Densidad"}\NormalTok{, }\AttributeTok{col =} \StringTok{"cyan4"}\NormalTok{,}
+     \AttributeTok{lwd =} \DecValTok{2}\NormalTok{, }\AttributeTok{las =} \DecValTok{1}\NormalTok{, }\AttributeTok{cex.axis=}\FloatTok{0.5}\NormalTok{, }\AttributeTok{cex.lab =} \FloatTok{0.8}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -934,7 +943,8 @@ En el siguiente histograma se presentan los resultados del Bootstrap.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\FunctionTok{hist}\NormalTok{(bootstrap}\SpecialCharTok{$}\NormalTok{t, }\AttributeTok{las=}\DecValTok{1}\NormalTok{, }\AttributeTok{main=}\StringTok{"Histograma de las medias de salarios"}\NormalTok{, }\AttributeTok{xlab=}\StringTok{"Media Bootstrap"}\NormalTok{, }\AttributeTok{ylab=}\StringTok{"Frecuencia"}\NormalTok{, }\AttributeTok{col=}\StringTok{"lightblue"}\NormalTok{)}
+\FunctionTok{hist}\NormalTok{(bootstrap}\SpecialCharTok{$}\NormalTok{t, }\AttributeTok{las=}\DecValTok{1}\NormalTok{, }\AttributeTok{main=}\StringTok{"Histograma de las medias de salarios"}\NormalTok{,}
+     \AttributeTok{xlab=}\StringTok{"Media Bootstrap"}\NormalTok{, }\AttributeTok{ylab=}\StringTok{"Frecuencia"}\NormalTok{, }\AttributeTok{col=}\StringTok{"lightblue"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 

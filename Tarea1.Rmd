@@ -113,13 +113,15 @@ Es de interés conocer las diferencias o similitudes en los datos del número de
 
 resumen_cuotas_hombres <-summary(base_salarios$Coutas[base_salarios$Sexo == 1])
 
-varianza_cuotas_hombres <- var(base_salarios$Coutas[base_salarios$Sexo == 1])
+varianza_cuotas_hombres <- var(base_salarios$Coutas
+                               [base_salarios$Sexo == 1])
 
 resumen_cuotas_hombres <- c(resumen_cuotas_hombres, Varianza = varianza_cuotas_hombres)
 
 resumen_cuotas_mujeres <-summary(base_salarios$Coutas[base_salarios$Sexo == 2])
 
-varianza_cuotas_mujeres <- var(base_salarios$Coutas[base_salarios$Sexo == 2])
+varianza_cuotas_mujeres <- var(base_salarios$Coutas
+                               [base_salarios$Sexo == 2])
 
 resumen_cuotas_mujeres <- c(resumen_cuotas_mujeres, Varianza = varianza_cuotas_mujeres)
 
@@ -160,13 +162,15 @@ Además, a continuación, se muestra el código y un cuadro con un resumen estad
 
 resumen_salarios_hombres <-summary(base_salarios$Ultimo.Salario[base_salarios$Sexo == 1])
 
-varianza_salarios_hombres <- var(base_salarios$Ultimo.Salario[base_salarios$Sexo == 1])
+varianza_salarios_hombres <- var(base_salarios$Ultimo.Salario
+                                 [base_salarios$Sexo == 1])
 
 resumen_salarios_hombres <- c(resumen_salarios_hombres, Varianza = varianza_salarios_hombres)
 
 resumen_salarios_mujeres <-summary(base_salarios$Ultimo.Salario[base_salarios$Sexo == 2])
 
-varianza_salarios_mujeres <- var(base_salarios$Ultimo.Salario[base_salarios$Sexo == 2])
+varianza_salarios_mujeres <- var(base_salarios$Ultimo.Salario
+                                 [base_salarios$Sexo == 2])
 
 resumen_salarios_mujeres <- c(resumen_salarios_mujeres, Varianza = varianza_salarios_mujeres)
 
@@ -282,7 +286,9 @@ grafBase <- ggplot(base_salarios, aes(x = Ultimo.Salario)) +
        y = "Frecuencia") +
   theme_cowplot() +
   scale_x_continuous(
-    breaks = seq(min(base_salarios$Ultimo.Salario), max(base_salarios$Ultimo.Salario), length.out = 10),
+    breaks = seq(min(base_salarios$Ultimo.Salario), 
+                 max(base_salarios$Ultimo.Salario), 
+                 length.out = 10),
     labels = scales::label_number(big.mark = " ", decimal.mark = ".", scale = 1e-3))
 
 grafBase
@@ -489,7 +495,7 @@ El Criterio de Información de Akaike (AIC) es una medida utilizada en estadíst
 
 \[ AIC= 2*N−2*log(L) \]
 
-Donde \[L\] representa la funcion de máxima verosimilitud del modelo y \[N\] representa el número de parámetros en el modelo. El modelo penaliza aquellos modelos que utilizan varios parámetros, ya que se busca el modelo con mayor simpleza. Cuando se comparan varios modelos, el modelo con el AIC más bajo se considera preferido.
+Donde $L$ representa la funcion de máxima verosimilitud del modelo y $N$ representa el número de parámetros en el modelo. El modelo penaliza aquellos modelos que utilizan varios parámetros, ya que se busca el modelo con mayor simpleza. Cuando se comparan varios modelos, el modelo con el AIC más bajo se considera preferido.
 
 ## Análisis del AIC de la variable Ultimo.Salario mediante la función model_select
 ```{r, results='markup'}
