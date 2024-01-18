@@ -27,6 +27,8 @@ header-includes:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+\newpage
+
 # Introducción
 
 El presente documento prestan el código y resultados a los ejercicios de la Tarea 1 del curso. Para su realización, se utilizó el programa R studio. 
@@ -45,13 +47,13 @@ library(ks) # para Kernel smoothing
 library(knitr) # para presentar mejor los datos en formato tabla
 options(scipen = 999) # para no utilizar notación científica
 library(cowplot) # para hacer graficos más atractivos
-library(ks) #para hacer estimación de la densidad del kernel
 ```
 
 El presente trabajo utilizó la base de datos "BaseSalarios" brindada por el profesor Esteban Bermúdez Aguilar. A continuación se presenta el código para la lectura de la base de datos, así como también unos ajustes para poder manipular y extraer la información de los datos. 
 
 ```{r, echo=TRUE, results='hide', message=FALSE, warning=FALSE}
-#---CSV y formatos------------------------------------
+
+#---CSV y formatos-----------------------------------------
 
 # Abrir y dar formato a la base de datos
 
@@ -87,15 +89,15 @@ kable(head(base_salarios_temp), caption = "Primeros 6 registros de la base de da
 La columna **ID** cuenta el número de registros disponibles, en este caso, se dispone de 106,002 registros. En la columna **Fec.Nac** se encuentra la información de la fecha de nacimiento de cada persona. En la tercera columna, **Sexo**, se observan los números 1 y 2; específicamente, si el valor de Sexo es 1, corresponde a hombres, y si es 2, corresponde a mujeres. La cuarta columna, **Cuotas** indica la cantidad de cuotas que cada persona ha aportado a un fondo de pensiones. Finalmente, la columna **Ultimo.Salario** contiene el último salario reportado, expresado en colones.  
 
 
-Es importante señalar que se tomó la decisión de eliminar dos registros de la base de datos, ya que se consideraron datos anómalos, es decir, outliers. Estos dos registros correspondían a salarios de 13 199 892 y 13 110 539 colones y estaban asociados a individuos del género masculino. Ambos salarios superaban la media salarial de hombres en al menos 11 953 340 colones. 
+Es importante señalar que se tomó la decisión de eliminar dos registros de la base de datos, ya que se consideraron datos atípicos, es decir, outliers. Estos dos registros correspondían a salarios de 13 199 892 y 13 110 539 colones y estaban asociados a individuos del género masculino. Ambos salarios superaban la media salarial de hombres en al menos 11 953 340 colones. 
 
 ```{r, eval=FALSE}
 
-base_salarios<- base_salarios[-84807, ] # corresponde al salario 13 199 892
-base_salarios<- base_salarios[-96367, ] # corresponde al salario 13 110 539
+base_salarios <- base_salarios[-84807, ] # corresponde al salario 13 199 892
+base_salarios <- base_salarios[-96367, ] # corresponde al salario 13 110 539
 
 ```
-
+\newpage 
 
 # Parte I
 
@@ -135,9 +137,9 @@ A continuación, se presenta un cuadro con un resumen estadístico de los datos 
 kable(cuotas_resumen, caption = "Resumen estadístico de número de coutas por sexo")
 ```
 
-Como se puede observar, tanto para mujeres como para hombres, el mínimo de cuotas aportadas es tan solo una.
+Como se puede observar, tanto para mujeres como para hombres, el número mínimo de cuotas aportadas es tan solo una.
 
-Por su parte, se puede decir que en general y se va a justificar a continuación, las mujeres de la base de datos aportaron más cuotas que los hombres. 
+En general, y se va a justificar a continuación, se puede decir que las mujeres en la base de datos han aportado más cuotas que los hombres.
 
 Se puede notar que el 25% de los hombres aportó 61 cuotas o menos, mientras que en el caso de las mujeres, el 25% aportó 66 cuotas o menos.
  
@@ -151,10 +153,7 @@ El valor máximo de cuotas aportadas para las mujeres fue de 373, mientras que p
 
 Es importante resaltar que para ambos sexos, la varianza indica que los datos están alejados de la media y se presenta mucha variabilidad en los datos de número de cuotas aportadas al fondo de pensiones. 
 
-
-\newpage
-
-Por otra parte, a continuación, se presenta un cuadro con un resumen estadístico de los datos del último salario reportado para hombres y mujeres.
+Además, a continuación, se muestra el código y un cuadro con un resumen estadístico de los datos del último salario reportado tanto para hombres como para mujeres.
 
 ```{r, echo=TRUE, results='hide', message=FALSE, warning=FALSE}
 
@@ -171,7 +170,8 @@ varianza_salarios_mujeres <- var(base_salarios$Ultimo.Salario[base_salarios$Sexo
 resumen_salarios_mujeres <- c(resumen_salarios_mujeres, Varianza = varianza_salarios_mujeres)
 
 salarios_resumen <- data.frame(
-  Estadistico = c("Mínimo", "Primer cuartil (Q1)", "Mediana", "Promedio", "Tercer cuartil (Q3)", "Máximo", "Varianza"),
+  Estadistico = c("Mínimo", "Primer cuartil (Q1)", "Mediana", "Promedio", "Tercer cuartil (Q3)",
+                  "Máximo", "Varianza"),
   Hombres = format(as.numeric(round(resumen_salarios_hombres,2)),big.mark = " "),
   Mujeres = format(as.numeric(round(resumen_salarios_mujeres,2))
 ,big.mark = " "))
@@ -196,7 +196,6 @@ El salario máximo reportado por hombres es 864 755 colones más alto que el de 
 
 Es importante resaltar que la varianza para ambos sexos señala que los datos están muy dispersos de la media, es decir hay una gran variabilidad en los datos de último salario reportado. 
 
-\newpage 
 
 ## Gráfico plotbox para el salario para comparar entre las categorías de Sexo
 
@@ -209,7 +208,7 @@ boxplot_salarios <- ggplot(base_salarios_temp2, aes(x = Sexo, y = Ultimo.Salario
   geom_boxplot() +
   theme_cowplot() +
   scale_x_discrete(labels = c("Hombre", "Mujer")) +
-  scale_fill_manual(values = c("Hombre" = "lightblue", "Mujer" = "seagreen")) +
+  scale_fill_manual(values = c("Hombre" = "seagreen", "Mujer" = "lightblue")) +
   labs(x = "Sexo", y = "Ultimo salario reportado en miles de colones") +
   scale_y_continuous(breaks = seq(0, 15000000, by = 1000000), labels =   scales::comma_format(scale = 1e-3)) + ggtitle("Boxplot de Ultimo Salario por Sexo")
 
@@ -264,17 +263,18 @@ t.test(
 El p-valor lo que dice es si se asume la H0 como verdadera, la probabilidad de que H0 sea verdadera. En este caso, el valor p fue menor a \( 0.00000000000000022
 \) lo cual es muy cercano a 0, es decir, hay una probabilidad muy pequeña de que la media de los últimos salarios entre hombres y mujeres sea 0, es decir, que sea la misma. Por tanto, existe suficiente evidencia para rechazar la hipotesis nula. 
 
-
+\newpage 
 # Parte II
 
-## Construcción del Histograma de los salarios
+## Construcción del histograma de los salarios
 
-A coninaución se presenta el histograma de los salarios de la base de datos. Se decidió dividir los salarios en 30 grupos (30 rectángulos). El histograma evidencia una cantidad pequeña de salarios bajos. Luego, se puede observar que la gran mayoría de las personas están entre el rectángulo dos y el rectángulo seis. En particular, el rectángulo seis es el que más registros contiene y señala que se trata de salarios menor a 1 820 000 colones. 
+A continuación, se presenta el histograma de los salarios de la base de datos. Se decidió dividir los salarios en 30 grupos (30 rectángulos). El histograma evidencia una cantidad reducida de salarios bajos. Luego, se puede observar que la gran mayoría de las personas se encuentran entre el rectángulo dos y el rectángulo seis. En particular, el rectángulo seis es el que contiene más registros y señala que se trata de salarios menores a 1 820 000 colones. 
 
 ```{r, echo=TRUE}
 
-ggplot(base_salarios, aes(x = Ultimo.Salario)) +
-  geom_histogram(binwidth = (max(base_salarios$Ultimo.Salario) - min(base_salarios$Ultimo.Salario)) / 29, 
+grafBase <- ggplot(base_salarios, aes(x = Ultimo.Salario)) +
+  geom_histogram(binwidth = (max(base_salarios$Ultimo.Salario) -
+                               min(base_salarios$Ultimo.Salario)) / 29, 
                  fill = "lightblue", color = "black", alpha = 0.7) +
   labs(title = "Histograma de los últimos salarios reportados", 
        x = "Salario en miles de colones", 
@@ -282,52 +282,69 @@ ggplot(base_salarios, aes(x = Ultimo.Salario)) +
   theme_cowplot() +
   scale_x_continuous(
     breaks = seq(min(base_salarios$Ultimo.Salario), max(base_salarios$Ultimo.Salario), length.out = 10),
-    labels = scales::label_number(big.mark = " ", decimal.mark = ".", scale = 1e-3)
-  )
+    labels = scales::label_number(big.mark = " ", decimal.mark = ".", scale = 1e-3))
 
+grafBase
 
 ```
 
-
-#Parte III
-
 ## Densidad de los salarios por kernel (no paramétrica)
+
+Una forma de aproximar la densidad de una muestra es mediante el uso de kernels. Existen diversos tipos de kernels, como el kernel normal, kernel epanechnikov, kernel triangular, kernel coseno y kernel rectangular. A continuación, se presentan los gráficos de la densidad de los salarios utilizando cada uno de estos tipos de kernels mediante la función Density en el programa R.
 
 ### Densidad de los salarios por kernel usando como kernel Biweigth 
 
-```{r, echo=FALSE, warning=FALSE}
-
+```{r, echo=TRUE, warning=FALSE}
 density_biweight <- density(base_salarios$Ultimo.Salario, kernel = "biweight")
 
+```
+
+```{r, echo=TRUE, warning=FALSE, eval=FALSE}
+grafBase <- grafBase +
+  geom_line(data = data.frame(x = density_biweight$x, y = density_biweight$y),
+            aes(x, y), color = "cyan4", size = 1) +  
+  labs(title = "Densidad de los últimos salarios reportados ", 
+       subtitle = "con Kernel Biweight", x = "Salario en miles de colones", y = "Densidad")
+```
+
+```{r, echo=FALSE, warning=FALSE}
 ggplot(base_salarios, aes(x = Ultimo.Salario)) +
   geom_histogram(binwidth = 150000, fill = "lightblue", color = "black", alpha = 0.7, aes(y = ..density..)) +
   geom_line(data = data.frame(x = density_biweight$x, y = density_biweight$y),
             aes(x, y), color = "cyan4", size = 1) +  
-  labs(title = "Densidad de los últimos salarios reportados ", subtitle = "con Kernel Biweight", x = "Salario en miles de colones", y = "Densidad") +
+  labs(title = "Densidad de los últimos salarios reportados ",
+       subtitle = "con Kernel Biweight", x = "Salario en miles de colones", y = "Densidad") +
   theme_cowplot() +
   scale_x_continuous(
-    breaks = seq(min(base_salarios$Ultimo.Salario), max(base_salarios$Ultimo.Salario), length.out = 8),
-    labels = scales::label_number(big.mark = " ", decimal.mark = ".", scale = 1e-3)
-  )
-
-
-
+    breaks = seq(min(base_salarios$Ultimo.Salario), max(base_salarios$Ultimo.Salario), length.out = 10),
+    labels = scales::label_number(big.mark = " ", decimal.mark = ".", scale = 1e-3))
 ```
 
 ### Densidad de los salarios por kernel usando como kernel Normal
 
-```{r, echo=FALSE, warning=FALSE}
-
+```{r, echo=TRUE, warning=FALSE}
 density_normal <- density(base_salarios$Ultimo.Salario,kernel = "gaussian")
 
+```
+
+```{r, echo=TRUE, warning=FALSE, eval=FALSE}
+grafBase <- grafBase +
+  geom_line(data = data.frame(x = density_normal$x, y = density_normal$y),
+            aes(x, y), color = "red3", size = 1) +  
+  labs(title = "Densidad de los últimos salarios reportados ", 
+       subtitle = "con Kernel Normal", x = "Salario en miles de colones", y = "Densidad")
+```
+
+```{r, echo=FALSE, warning=FALSE}
 ggplot(base_salarios, aes(x = Ultimo.Salario)) +
   geom_histogram(binwidth = 150000, fill = "lightblue", color = "black", alpha = 0.7, aes(y = ..density..)) +
   geom_line(data = data.frame(x = density_normal$x, y = density_normal$y),
             aes(x, y), color = "red3", size = 1) +  
-  labs(title = "Densidad de los últimos salarios reportados ", subtitle = "con Kernel Normal", x = "Salario en miles de colones", y = "Densidad") +
+  labs(title = "Densidad de los últimos salarios reportados ", 
+       subtitle = "con Kernel Normal", x = "Salario en miles de colones", y = "Densidad") +
   theme_cowplot() +
   scale_x_continuous(
-    breaks = seq(min(base_salarios$Ultimo.Salario), max(base_salarios$Ultimo.Salario), length.out = 8),
+    breaks = seq(min(base_salarios$Ultimo.Salario), max(base_salarios$Ultimo.Salario), length.out = 10),
     labels = scales::label_number(big.mark = " ", decimal.mark = ".", scale = 1e-3)
   )
 
@@ -336,18 +353,30 @@ ggplot(base_salarios, aes(x = Ultimo.Salario)) +
 
 ### Densidad de los salarios por kernel usando como kernel Epanechnikov
 
-```{r, echo=FALSE, warning=FALSE}
-
+```{r, echo=TRUE, warning=FALSE}
 density_epanechnikov <- density(base_salarios$Ultimo.Salario,kernel = "epanechnikov")
+
+```
+
+```{r, echo=TRUE, warning=FALSE, eval=FALSE}
+grafBase <- grafBase +
+  geom_line(data = data.frame(x = density_epanechnikov$x, y = density_epanechnikov$y),
+            aes(x, y), color = "seagreen", size = 1) +  
+  labs(title = "Densidad de los últimos salarios reportados ",
+       subtitle = "con Kernel Epanechnikov", x = "Salario en miles de colones", y = "Densidad")
+```
+
+```{r, echo=FALSE, warning=FALSE}
 
 ggplot(base_salarios, aes(x = Ultimo.Salario)) +
   geom_histogram(binwidth = 150000, fill = "lightblue", color = "black", alpha = 0.7, aes(y = ..density..)) +
   geom_line(data = data.frame(x = density_epanechnikov$x, y = density_epanechnikov$y),
             aes(x, y), color = "seagreen", size = 1) +  
-  labs(title = "Densidad de los últimos salarios reportados ",subtitle = "con Kernel Epanechnikov", x = "Salario en miles de colones", y = "Densidad") +
+  labs(title = "Densidad de los últimos salarios reportados ",
+       subtitle = "con Kernel Epanechnikov", x = "Salario en miles de colones", y = "Densidad") +
   theme_cowplot() +
   scale_x_continuous(
-    breaks = seq(min(base_salarios$Ultimo.Salario), max(base_salarios$Ultimo.Salario), length.out = 8),
+    breaks = seq(min(base_salarios$Ultimo.Salario), max(base_salarios$Ultimo.Salario), length.out = 10),
     labels = scales::label_number(big.mark = " ", decimal.mark = ".", scale = 1e-3)
   )
 
@@ -355,18 +384,28 @@ ggplot(base_salarios, aes(x = Ultimo.Salario)) +
 
 ### Densidad de los salarios por kernel usando como kernel Coseno
 
-```{r, echo=FALSE, warning=FALSE}
-
+```{r, echo=TRUE, warning=FALSE}
 density_coseno <- density(base_salarios$Ultimo.Salario,kernel = "cosine")
+```
 
+```{r, echo=TRUE, warning=FALSE, eval=FALSE}
+grafBase <- grafBase +
+  geom_line(data = data.frame(x = density_coseno$x, y = density_coseno$y),
+            aes(x, y), color = "hotpink1", size = 1) +  
+  labs(title = "Densidad de los últimos salarios reportados ",
+       subtitle = "con Kernel Coseno", x = "Salario en miles de colones", y = "Densidad")
+```
+
+```{r, echo=FALSE, warning=FALSE}
 ggplot(base_salarios, aes(x = Ultimo.Salario)) +
   geom_histogram(binwidth = 150000, fill = "lightblue", color = "black", alpha = 0.7, aes(y = ..density..)) +
   geom_line(data = data.frame(x = density_coseno$x, y = density_coseno$y),
             aes(x, y), color = "hotpink1", size = 1) +  
-  labs(title = "Densidad de los últimos salarios reportados ",subtitle = "con Kernel Coseno", x = "Salario en miles de colones", y = "Densidad") +
+  labs(title = "Densidad de los últimos salarios reportados ",
+       subtitle = "con Kernel Coseno", x = "Salario en miles de colones", y = "Densidad") +
   theme_cowplot() +
   scale_x_continuous(
-    breaks = seq(min(base_salarios$Ultimo.Salario), max(base_salarios$Ultimo.Salario), length.out = 8),
+    breaks = seq(min(base_salarios$Ultimo.Salario), max(base_salarios$Ultimo.Salario), length.out = 10),
     labels = scales::label_number(big.mark = " ", decimal.mark = ".", scale = 1e-3)
   )
 
@@ -375,9 +414,20 @@ ggplot(base_salarios, aes(x = Ultimo.Salario)) +
 
 ### Densidad de los salarios por kernel usando como kernel Rectangular
 
-```{r, echo=FALSE, warning=FALSE}
-
+```{r, echo=TRUE, warning=FALSE}
 density_rectangular <- density(base_salarios$Ultimo.Salario,kernel = "rectangular")
+```
+
+```{r, echo=TRUE, warning=FALSE, eval=FALSE}
+grafBase <- grafBase +
+  geom_line(data = data.frame(x = density_rectangular$x, y = density_rectangular$y),
+            aes(x, y), color = "goldenrod2", size = 1) +  
+  labs(title = "Densidad de los últimos salarios reportados ",
+       
+       subtitle = "con Kernel Rectangular", x = "Salario en miles de colones", y = "Densidad")
+```
+
+```{r, echo=FALSE, warning=FALSE}
 
 ggplot(base_salarios, aes(x = Ultimo.Salario)) +
   geom_histogram(binwidth = 150000, fill = "lightblue", color = "black", alpha = 0.7, aes(y = ..density..)) +
@@ -386,7 +436,7 @@ ggplot(base_salarios, aes(x = Ultimo.Salario)) +
   labs(title = "Densidad de los últimos salarios reportados ",subtitle = "con Kernel Rectangular", x = "Salario en miles de colones", y = "Densidad") +
   theme_cowplot() +
   scale_x_continuous(
-    breaks = seq(min(base_salarios$Ultimo.Salario), max(base_salarios$Ultimo.Salario), length.out = 8),
+    breaks = seq(min(base_salarios$Ultimo.Salario), max(base_salarios$Ultimo.Salario), length.out = 10),
     labels = scales::label_number(big.mark = " ", decimal.mark = ".", scale = 1e-3)
   )
 
@@ -394,35 +444,42 @@ ggplot(base_salarios, aes(x = Ultimo.Salario)) +
 
 ### Densidad de los salarios con todos los kernel
 
-```{r, echo=FALSE, warning=FALSE}
+En el siguiente gráfico, se colocó todos los kernel en un sólo gráfico. En este gráfico lo que se puede observar es que la gráfica de kernel epanechnikov es la que más se distancia del resto de las gráficas. 
+
+
+```{r, echo=TRUE, warning=FALSE}
 
 ggplot(base_salarios, aes(x = Ultimo.Salario)) +
-  geom_histogram(binwidth = 150000, fill = "lightblue", color = "black", alpha = 0.7, aes(y = ..density..)) +
+  geom_histogram(binwidth = 150000, fill = "lightblue", color = "black", alpha = 0.7, 
+                 aes(y = ..density..)) +
   geom_line(data = data.frame(x = density_normal$x, y = density_normal$y),
-            aes(x, y, color = "Normal"), size = 1.5) +
+            aes(x, y, color = "Normal"), size = 2) +
   geom_line(data = data.frame(x = density_biweight$x, y = density_biweight$y),
-            aes(x, y, color = "Biweight"), size = 1.4) +
+            aes(x, y, color = "Biweight"), size = 1.7) +
   geom_line(data = data.frame(x = density_coseno$x, y = density_coseno$y),
-            aes(x, y, color = "Coseno"), size = 1.3) +
+            aes(x, y, color = "Coseno"), size = 1.4) +
   geom_line(data = data.frame(x = density_rectangular$x, y = density_rectangular$y),
-            aes(x, y, color = "Rectangular"), size = 1.2) +
+            aes(x, y, color = "Rectangular"), size = 1.1) +
   geom_line(data = data.frame(x = density_epanechnikov$x, y = density_epanechnikov$y),
-            aes(x, y, color = "Epanechnikov"), size = 1.1) +
-  labs(title = "Densidad de los últimos salarios reportados", x = "Salario en miles de colones", y = "Densidad") +
+            aes(x, y, color = "Epanechnikov"), size = 0.8) +
+  labs(title = "Densidad de los últimos salarios reportados", 
+       x = "Salario en miles de colones", y = "Densidad") +
   theme_cowplot() +
   scale_x_continuous(
-    breaks = seq(min(base_salarios$Ultimo.Salario), max(base_salarios$Ultimo.Salario), length.out = 8),
+    breaks = seq(min(base_salarios$Ultimo.Salario), max(base_salarios$Ultimo.Salario), 
+                 length.out = 10),
     labels = scales::label_number(big.mark = " ", decimal.mark = ".", scale = 1e-3)
   ) +
   scale_color_manual(values = c("red3", "cyan4", "hotpink1", "goldenrod2", "seagreen"),
                      name = "Kernel",
-                     labels = c("Normal", "Biweight", "Coseno", "Rectangular", "Epanechnikov")) +
+                     labels = c("Normal", "Biweight", "Coseno", "Rectangular", 
+                                "Epanechnikov")) +
   theme(legend.text = element_text(size = 6),
         legend.title = element_text(size = 9))
 
-
-
 ```
+
+
 
 # Parte III
 
@@ -441,11 +498,27 @@ model_select(base_salarios$Ultimo.Salario)
 Vemos que la funcion model select del paquete univariateML sugiere una distribución t-student para representar los datos de Ultimo.Salario.
 
 ## Análisis del AIC de la variable Ultimo.Salario mediante la función fit.cont
-```{r, results='markup'}
-# fit.cont(base_salarios$Ultimo.Salario)
+```{r, eval=FALSE}
+
+fit.cont(base_salarios$Ultimo.Salario)
 ```
 
-Bajo el criterio de AIC el modelo con el valor mas bajo es el Weibull, seguido por el Logistic con una diferencia de 13 042 unidades. Mientras que la diferencia entre el Weibull y el Student es de 745 301 unidades. Es debido a ello que se escoge Weibull para representar nuestros datos de salarios.
+```{r, echo=FALSE}
+fit.cont.resultados <- data.frame(
+  Distribución = c("Cauchy", "Uniforme", "Lognormal","Weibull", "F","Student"),
+  AIC = c("3 158 816.91","NULL" ,"3 119 863.45", "3 104 610.52", "3 705 605.8", "3 850 227.82")
+)
+
+```
+
+```{r, echo=FALSE}
+knitr::kable(fit.cont.resultados)
+```
+
+Bajo el criterio de AIC, el modelo con el valor más bajo es el Weibull, seguido por el Lognormal con una diferencia de 115 252.93 unidades. En comparación, la diferencia entre el Weibull y la distribución t que fue la que el fit.cont() recomendaba, es de 745 617.3 unidades. Es por este motivo, que al comparar ambos resultados, se opta por el modelo Weibull para representar los salarios. 
+
+
+
 
 ## Construcción de un intervalo de confianza para la media y la desviación estándar usando la función bootstrapml
 ```{r, results='markup'}
@@ -454,19 +527,29 @@ distribucionml <- mlweibull(base_salarios$Ultimo.Salario)
 
 bootstrapml(distribucionml, 
             map = function(x) mean(x))
+```
+
+Es decir, con una confianza del 95%, al aplicar bootstrapml, se estima que la media de la distribución Weibull, está entre los 606 922.4 colones y los 611 076.8 colones. 
+
+
+```{r, results='markup'}
+
 bootstrapml(distribucionml, 
             map = function(x) sd(x))
 ```
+
+Por su parte, la desviación estándar de la distribución Weibull al aplicar el bootstrapml está entre  858 674.9 y 864 239.7.
 
 # Parte IV
 
 ## Estimación de la densidad del kernel
 
-La funcion kde(Kernel Density Estimation) del paquete ks en R, tal como indica su nombre, realiza una estimación no paramétrica de la densidad de kernel de datos de 1 hasta 6 dimensiones. Esta función es comúnmente utilizada cuando la función de distribución de los datos es irregular, ya que kde() genera una función suavizada de la misma.
+La función kde(Kernel Density Estimation) del paquete ks en R,c omo su nombre indica, lleva a cabo una estimación no paramétrica de la densidad de kernel para datos de 1 hasta 6 dimensiones. Esta función se utiliza comúnmente cuando la función de distribución de los datos es irregular, ya que, kde() genera una función suavizada de la misma.
 
 
-```{r, echo=FALSE, warning=FALSE}
-plot(kde(base_salarios$Ultimo.Salario),  main = "Densidad de Kernel para los Salarios", xlab = "Monto del Salario", ylab= "Función de Densidad", col = "magenta2", lwd = 2, las = 1, cex.axis=0.5, cex.lab = 0.8)
+```{r, echo=TRUE, warning=FALSE}
+plot(kde(base_salarios$Ultimo.Salario),  main = "Densidad de Kernel para los Salarios", xlab = "Monto del Salario", ylab= "Función de Densidad", col = "cyan4", lwd = 2, las = 1, cex.axis=0.5, cex.lab = 0.8)
+
 
 ```
 
@@ -478,19 +561,33 @@ La función boot.ci del paquete boot en R se utiliza para calcular los intervalo
 ## Bootstrap de la media de los salarios
 
 ### Estimación de la media del Bootstrap
+
+En este caso, se consideran 1000 muestras bootstrap y se calcula la media para cada una de las muestras. 
+
+
 ```{r, results='markup'}
-set.seed(123)
+set.seed(123) #  generar números aleatorios
+
 bootstrap <- boot(data = base_salarios$Ultimo.Salario, 
                   statistic = function(x, indices) mean(x[indices]), R=1000)
 mean(bootstrap$t)
 bootstrap$t0 
+
+```
+La media de los últimos salarios al aplicar bootstrap es de  1 080 550 colones, mientras que la media de los datos originales fue de 1 080 558. Es decir, la diferencia entre estas es de 8 colones. 
+
+```{r, results='markup'}
 boot.ci(bootstrap, conf = 0.95, type = "basic")
 ```
 
+Con un nivel de confianza del 95%, la media de los salarios de la base de datos está entre 1 076 945 y 1 084 276 colones al aplicar bootstrap. 
 
 ### Histograma de los resultados
 
-```{r, echo=FALSE, warning=FALSE}
-hist(bootstrap$t, las = 1, main = "Histograma de las Medias de Salarios", xlab = "Media Bootstrap", ylab = "Frecuencia")
+En el siguiente histograma se presentan los resultados del Bootstrap. 
+```{r, echo=TRUE, warning=FALSE}
+hist(bootstrap$t, las=1, main="Histograma de las medias de salarios", xlab="Media Bootstrap", ylab="Frecuencia", col="lightblue")
+
+
 
 ```
