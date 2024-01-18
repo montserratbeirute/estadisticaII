@@ -91,8 +91,8 @@ Es importante señalar que se tomó la decisión de eliminar dos registros de la
 
 ```{r, eval=FALSE}
 
-base_salarios<- base_salarios[-84807, ] # corresponde al salario 13 199 892
-base_salarios<- base_salarios[-96367, ] # corresponde al salario 13 110 539
+base_salarios <- base_salarios[-84807, ] # corresponde al salario 13 199 892
+base_salarios <- base_salarios[-96367, ] # corresponde al salario 13 110 539
 
 ```
 
@@ -288,36 +288,135 @@ ggplot(base_salarios, aes(x = Ultimo.Salario)) +
 
 ```
 
-#Parte III
+## Densidad de los salarios por kernel (no paramétrica)
 
-El Criterio de Información de Akaike (AIC) es una medida utilizada en estadísticas y modelado para comparar modelos estadísticos.El AIC se calcula utilizando la siguiente fórmula:
+Una forma de aproximar la densidad de una muestra es utilizar kernels. Existen diferentes tipos de kernels: kernel normal, kernel epanechnikov, kernel triangular, kernel coseno, kernel rectangular. A continuación se presentan los gráficos de la densidad de los salarios utilizando cada uno de los tipos de kernels utilizando la función Density en el programa R. 
 
-\[ AIC= 2*N−2*log(L) \]
+### Densidad de los salarios por kernel usando como kernel Biweigth 
 
-Donde \[L\] representa la funcion de máxima verosimilitud del modelo y \[N\] representa el número de parámetros en el modelo. El modelo penaliza aquellos modelos que utilizan varios parámetros, ya que se busca el modelo con mayor simpleza. Cuando se comparan varios modelos, el modelo con el AIC más bajo se considera preferido.
+```{r, echo=TRUE, warning=FALSE}
 
-##Análisis del AIC de la variable Ultimo.Salario mediante la función model_select
-```{r, results='markup'}
-model_select(base_salarios$Ultimo.Salario)
+density_biweight <- density(base_salarios$Ultimo.Salario, kernel = "biweight")
+
+ggplot(base_salarios, aes(x = Ultimo.Salario)) +
+  geom_histogram(binwidth = 150000, fill = "lightblue", color = "black", alpha = 0.7, aes(y = ..density..)) +
+  geom_line(data = data.frame(x = density_biweight$x, y = density_biweight$y),
+            aes(x, y), color = "cyan4", size = 1) +  
+  labs(title = "Densidad de los últimos salarios reportados ", subtitle = "con Kernel Biweight", x = "Salario en miles de colones", y = "Densidad") +
+  theme_cowplot() +
+  scale_x_continuous(
+    breaks = seq(min(base_salarios$Ultimo.Salario), max(base_salarios$Ultimo.Salario), length.out = 10),
+    labels = scales::label_number(big.mark = " ", decimal.mark = ".", scale = 1e-3)
+  )
+
 ```
 
-Vemos que la funcion model select del paquete univariateML sugiere una distribución t-student para representar los datos de Ultimo.Salario.
+### Densidad de los salarios por kernel usando como kernel Normal
 
-##Análisis del AIC de la variable Ultimo.Salario mediante la función fit.cont
-```{r, results='markup'}
-fit.cont(base_salarios$Ultimo.Salario)
+```{r, echo=TRUE, warning=FALSE}
+
+density_normal <- density(base_salarios$Ultimo.Salario,kernel = "gaussian")
+
+ggplot(base_salarios, aes(x = Ultimo.Salario)) +
+  geom_histogram(binwidth = 150000, fill = "lightblue", color = "black", alpha = 0.7, aes(y = ..density..)) +
+  geom_line(data = data.frame(x = density_normal$x, y = density_normal$y),
+            aes(x, y), color = "red3", size = 1) +  
+  labs(title = "Densidad de los últimos salarios reportados ", subtitle = "con Kernel Normal", x = "Salario en miles de colones", y = "Densidad") +
+  theme_cowplot() +
+  scale_x_continuous(
+    breaks = seq(min(base_salarios$Ultimo.Salario), max(base_salarios$Ultimo.Salario), length.out = 10),
+    labels = scales::label_number(big.mark = " ", decimal.mark = ".", scale = 1e-3)
+  )
+
 ```
 
-Bajo el criterio de AIC el modelo con el valor mas bajo es el Weibull, seguido por el Logistic con una diferencia de 13 042 unidades. Mientras que la diferencia entre el Weibull y el Student es de 745 301 unidades. Es debido a ello que se escoge Weibull para representar nuestros datos de salarios.
 
-## Construcción de un intervalo de confianza para la media y la desviación estándar usando la función bootstrapml
-```{r, results='markup'}
-#Creamos un objeto de distribución
-distribucionml <- mlweibull(base_salarios$Ultimo.Salario)
+### Densidad de los salarios por kernel usando como kernel Epanechnikov
 
-bootstrapml(distribucionml, 
-            map = function(x) mean(x))
-bootstrapml(distribucionml, 
-            map = function(x) sd(x))
+```{r, echo=TRUE, warning=FALSE}
+
+density_epanechnikov <- density(base_salarios$Ultimo.Salario,kernel = "epanechnikov")
+
+ggplot(base_salarios, aes(x = Ultimo.Salario)) +
+  geom_histogram(binwidth = 150000, fill = "lightblue", color = "black", alpha = 0.7, aes(y = ..density..)) +
+  geom_line(data = data.frame(x = density_epanechnikov$x, y = density_epanechnikov$y),
+            aes(x, y), color = "seagreen", size = 1) +  
+  labs(title = "Densidad de los últimos salarios reportados ",subtitle = "con Kernel Epanechnikov", x = "Salario en miles de colones", y = "Densidad") +
+  theme_cowplot() +
+  scale_x_continuous(
+    breaks = seq(min(base_salarios$Ultimo.Salario), max(base_salarios$Ultimo.Salario), length.out = 10),
+    labels = scales::label_number(big.mark = " ", decimal.mark = ".", scale = 1e-3)
+  )
+
 ```
 
+### Densidad de los salarios por kernel usando como kernel Coseno
+
+```{r, echo=TRUE, warning=FALSE}
+
+density_coseno <- density(base_salarios$Ultimo.Salario,kernel = "cosine")
+
+ggplot(base_salarios, aes(x = Ultimo.Salario)) +
+  geom_histogram(binwidth = 150000, fill = "lightblue", color = "black", alpha = 0.7, aes(y = ..density..)) +
+  geom_line(data = data.frame(x = density_coseno$x, y = density_coseno$y),
+            aes(x, y), color = "hotpink1", size = 1) +  
+  labs(title = "Densidad de los últimos salarios reportados ",subtitle = "con Kernel Coseno", x = "Salario en miles de colones", y = "Densidad") +
+  theme_cowplot() +
+  scale_x_continuous(
+    breaks = seq(min(base_salarios$Ultimo.Salario), max(base_salarios$Ultimo.Salario), length.out = 10),
+    labels = scales::label_number(big.mark = " ", decimal.mark = ".", scale = 1e-3)
+  )
+
+```
+
+
+### Densidad de los salarios por kernel usando como kernel Rectangular
+
+```{r, echo=TRUE, warning=FALSE}
+
+density_rectangular <- density(base_salarios$Ultimo.Salario,kernel = "rectangular")
+
+ggplot(base_salarios, aes(x = Ultimo.Salario)) +
+  geom_histogram(binwidth = 150000, fill = "lightblue", color = "black", alpha = 0.7, aes(y = ..density..)) +
+  geom_line(data = data.frame(x = density_rectangular$x, y = density_rectangular$y),
+            aes(x, y), color = "goldenrod2", size = 1) +  
+  labs(title = "Densidad de los últimos salarios reportados ",subtitle = "con Kernel Rectangular", x = "Salario en miles de colones", y = "Densidad") +
+  theme_cowplot() +
+  scale_x_continuous(
+    breaks = seq(min(base_salarios$Ultimo.Salario), max(base_salarios$Ultimo.Salario), length.out = 10),
+    labels = scales::label_number(big.mark = " ", decimal.mark = ".", scale = 1e-3)
+  )
+
+```
+
+### Densidad de los salarios con todos los kernel
+
+```{r, echo=TRUE, warning=FALSE}
+
+ggplot(base_salarios, aes(x = Ultimo.Salario)) +
+  geom_histogram(binwidth = 150000, fill = "lightblue", color = "black", alpha = 0.7, aes(y = ..density..)) +
+  geom_line(data = data.frame(x = density_normal$x, y = density_normal$y),
+            aes(x, y, color = "Normal"), size = 2) +
+  geom_line(data = data.frame(x = density_biweight$x, y = density_biweight$y),
+            aes(x, y, color = "Biweight"), size = 1.7) +
+  geom_line(data = data.frame(x = density_coseno$x, y = density_coseno$y),
+            aes(x, y, color = "Coseno"), size = 1.4) +
+  geom_line(data = data.frame(x = density_rectangular$x, y = density_rectangular$y),
+            aes(x, y, color = "Rectangular"), size = 1.1) +
+  geom_line(data = data.frame(x = density_epanechnikov$x, y = density_epanechnikov$y),
+            aes(x, y, color = "Epanechnikov"), size = 0.8) +
+  labs(title = "Densidad de los últimos salarios reportados", x = "Salario en miles de colones", y = "Densidad") +
+  theme_cowplot() +
+  scale_x_continuous(
+    breaks = seq(min(base_salarios$Ultimo.Salario), max(base_salarios$Ultimo.Salario), length.out = 10),
+    labels = scales::label_number(big.mark = " ", decimal.mark = ".", scale = 1e-3)
+  ) +
+  scale_color_manual(values = c("red3", "cyan4", "hotpink1", "goldenrod2", "seagreen"),
+                     name = "Kernel",
+                     labels = c("Normal", "Biweight", "Coseno", "Rectangular", "Epanechnikov")) +
+  theme(legend.text = element_text(size = 6),
+        legend.title = element_text(size = 9))
+
+```
+
+En el siguiente gráfico, se colocó todos los kernel en un sólo gráfico. En este gráfico lo que se puede observar es que la gráfica de kernel epanechnikov es la que más se distancia del resto de las gráficas. 

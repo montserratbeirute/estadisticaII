@@ -23,6 +23,8 @@ base_salarios <- subset(base_salarios, select = -X)
 
 base_salarios$Ultimo.Salario <- as.numeric(str_replace_all(base_salarios$Ultimo.Salario, ",", "."))
 
+base_salarios <- base_salarios[-84807, ] # corresponde al salario 13 199 892
+base_salarios <- base_salarios[-96367, ] # corresponde al salario 13 110 539
 #---Parte I----------------------------------------------------
 
 #Hombres
