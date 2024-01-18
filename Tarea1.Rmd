@@ -124,7 +124,8 @@ varianza_cuotas_mujeres <- var(base_salarios$Coutas[base_salarios$Sexo == 2])
 resumen_cuotas_mujeres <- c(resumen_cuotas_mujeres, Varianza = varianza_cuotas_mujeres)
 
 cuotas_resumen <- data.frame(
-  Estadistico = c("Mínimo", "Primer cuartil (Q1)", "Mediana", "Promedio", "Tercer cuartil (Q3)", "Máximo", "Varianza"),
+  Estadistico = c("Mínimo", "Primer cuartil (Q1)", "Mediana", "Promedio",
+                  "Tercer cuartil (Q3)", "Máximo", "Varianza"),
   Hombres = as.numeric(round(resumen_cuotas_hombres,2)),
   Mujeres = as.numeric(round(resumen_cuotas_mujeres,2))
 )
@@ -548,7 +549,9 @@ La función kde(Kernel Density Estimation) del paquete ks en R,c omo su nombre i
 
 
 ```{r, echo=TRUE, warning=FALSE}
-plot(kde(base_salarios$Ultimo.Salario),  main = "Densidad de Kernel para los Salarios", xlab = "Monto del Salario", ylab= "Función de Densidad", col = "cyan4", lwd = 2, las = 1, cex.axis=0.5, cex.lab = 0.8)
+plot(kde(base_salarios$Ultimo.Salario),  main = "Densidad de Kernel para los Salarios", 
+     xlab = "Monto del Salario", ylab= "Función de Densidad", col = "cyan4",
+     lwd = 2, las = 1, cex.axis=0.5, cex.lab = 0.8)
 
 
 ```
@@ -586,7 +589,8 @@ Con un nivel de confianza del 95%, la media de los salarios de la base de datos 
 
 En el siguiente histograma se presentan los resultados del Bootstrap. 
 ```{r, echo=TRUE, warning=FALSE}
-hist(bootstrap$t, las=1, main="Histograma de las medias de salarios", xlab="Media Bootstrap", ylab="Frecuencia", col="lightblue")
+hist(bootstrap$t, las=1, main="Histograma de las medias de salarios",
+     xlab="Media Bootstrap", ylab="Frecuencia", col="lightblue")
 
 
 
